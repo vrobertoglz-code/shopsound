@@ -8,6 +8,7 @@ use App\Models\Producto;
 use App\Models\DetalleVenta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class VentaController extends Controller
 {
@@ -97,6 +98,20 @@ class VentaController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
+    }
+
+    public function pdf(Venta $venta)
+    {
+        $venta->load([
+            'cliente',
+            'detalles.producto'
+        ]);
+
+        $pdf = Pdf::loadView('ventas.pdf', compact('venta'));
+
+        return $pdf->stream(
+            'venta-'.$venta->id.'.pdf'
+        );
     }
 
     public function show(Venta $venta)

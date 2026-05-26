@@ -10,12 +10,24 @@
 
             </h1>
 
-            <a href="{{ route('ventas.index') }}"
-               class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+            <div class="flex gap-2">
 
-                Volver
+                <a href="{{ route('ventas.pdf', $venta->id) }}"
+                   target="_blank"
+                   class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
 
-            </a>
+                    PDF
+
+                </a>
+
+                <a href="{{ route('ventas.index') }}"
+                   class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+
+                    Volver
+
+                </a>
+
+            </div>
 
         </div>
 

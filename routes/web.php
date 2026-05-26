@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClienteController;
@@ -36,6 +37,13 @@ Route::middleware('auth')->group(function () {
         ->name('ventas.store');
     Route::get('ventas/{venta}', [VentaController::class, 'show'])
     ->name('ventas.show');
+    Route::get('ventas/{venta}/pdf', [VentaController::class, 'pdf'])
+        ->name('ventas.pdf');
+    Route::get('reportes', [ReporteController::class, 'index'])
+        ->name('reportes.index');
+
+    Route::post('reportes/ventas', [ReporteController::class, 'ventasPorFecha'])
+        ->name('reportes.ventas');
 });
 
 require __DIR__.'/auth.php';
