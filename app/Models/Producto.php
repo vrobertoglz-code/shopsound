@@ -28,4 +28,9 @@ class Producto extends Model
     {
         return $this->belongsTo(Marca::class);
     }
+
+    public function detallesVenta()
+    {
+        return $this->hasMany(DetalleVenta::class);
+    }
 }
