@@ -26,6 +26,7 @@
 
         <form action="{{ route('productos.update', $producto->id) }}"
               method="POST"
+              enctype="multipart/form-data"
               class="bg-white p-6 rounded shadow">
 
             @csrf
@@ -89,6 +90,33 @@
                 </div>
 
             </div>
+
+            <div class="mb-4">
+
+                <label class="block mb-2">
+                    Imagen del Producto
+                </label>
+
+                <input type="file"
+                       name="imagen"
+                       class="w-full border rounded px-4 py-2">
+
+            </div>
+
+            @if($producto->imagen)
+
+                <div class="mb-4">
+
+                    <p class="mb-2 text-sm text-gray-600">
+                        Imagen actual
+                    </p>
+
+                    <img src="{{ asset('storage/' . $producto->imagen) }}"
+                         class="w-32 h-32 object-cover rounded shadow">
+
+                </div>
+
+            @endif
 
             <div class="grid grid-cols-2 gap-4">
 

@@ -24,8 +24,9 @@
 
         @endif
 
-        <form action="{{ route('productos.store') }}"
+          <form action="{{ route('productos.store') }}"
               method="POST"
+              enctype="multipart/form-data"
               class="bg-white p-6 rounded shadow">
 
             @csrf
@@ -51,6 +52,18 @@
 
                 <textarea name="descripcion"
                           class="w-full border rounded px-4 py-2"></textarea>
+
+            </div>
+
+            <div class="mb-4">
+
+                <label class="block mb-2">
+                    Imagen
+                </label>
+
+                <input type="file"
+                       name="imagen"
+                       class="w-full border rounded px-4 py-2">
 
             </div>
 

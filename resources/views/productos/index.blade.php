@@ -56,6 +56,10 @@
                         </th>
 
                         <th class="px-6 py-3 text-left">
+                            Imagen
+                        </th>
+
+                        <th class="px-6 py-3 text-left">
                             Estado
                         </th>
 
@@ -91,6 +95,21 @@
 
                             <td class="px-6 py-4">
                                 {{ $producto->stock }}
+                            </td>
+
+                            <td class="px-6 py-4">
+
+                                @if($producto->imagen)
+
+                                    <img src="{{ asset('storage/' . $producto->imagen) }}"
+                                         class="w-16 h-16 object-cover rounded">
+
+                                @else
+
+                                    Sin imagen
+
+                                @endif
+
                             </td>
 
                             <td class="px-6 py-4">
@@ -144,7 +163,7 @@
 
                         <tr>
 
-                            <td colspan="7"
+                            <td colspan="8"
                                 class="text-center py-6 text-gray-500">
 
                                 No hay productos registrados

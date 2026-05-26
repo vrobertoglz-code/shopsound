@@ -36,10 +36,74 @@ class ProductoController extends Controller
             'marca_id' => 'required'
         ]);
 
-        Producto::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('imagen')) {
+
+            $data['imagen'] = $request->file('imagen')
+                ->store('productos', 'public');
+        }
+
+        Producto::create($data);
 
         return redirect()
             ->route('productos.index')
             ->with('success', 'Producto creado correctamente');
     }
+public function edit(string $id)
+{
+    $producto = Producto::findOrFail($id);
+
+    $categorias = Categoria::where('activo', true)->get();
+
+    $marcas = Marca::where('activo', true)->get();
+
+    return view(
+        'productos.edit',
+        compact(
+            'producto',
+            'categorias',
+            'marcas'
+        )
+    );
+}
+
+public function update(Request $request, string $id)
+{
+    $producto = Producto::findOrFail($id);
+
+    $request->validate([
+        'nombre' => 'required|max:255',
+        'precio' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'categoria_id' => 'required',
+        'marca_id' => 'required'
+    ]);
+    $data = $request->all();
+
+    if ($request->hasFile('imagen')) {
+
+        $data['imagen'] = $request->file('imagen')
+            ->store('productos', 'public');
+    }
+
+    $producto->update($data);
+
+    return redirect()
+        ->route('productos.index')
+        ->with('success', 'Producto actualizado correctamente');
+}
+
+public function destroy(string $id)
+{
+    $producto = Producto::findOrFail($id);
+
+    $producto->update([
+        'activo' => false
+    ]);
+
+    return redirect()
+        ->route('productos.index')
+        ->with('success', 'Producto desactivado correctamente');
+}
 }
