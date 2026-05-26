@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ClienteController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('categorias', CategoriaController::class);
     Route::resource('marcas', MarcaController::class);
     Route::resource('productos', ProductoController::class);
+    Route::resource('clientes', ClienteController::class);
 });
 
 require __DIR__.'/auth.php';

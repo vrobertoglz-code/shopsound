@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('marcas.index')" :active="request()->routeIs('marcas.*')">
                         {{ __('Marcas') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('clientes.index')" :active="request()->routeIs('clientes.*')">
+                        Clientes
+                    </x-nav-link>
                     <x-nav-link :href="route('productos.index')" :active="request()->routeIs('productos.*')">
                         {{ __('Productos') }}
                     </x-nav-link>
