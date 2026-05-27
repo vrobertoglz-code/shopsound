@@ -30,6 +30,14 @@
                     <x-nav-link :href="route('ventas.index')" :active="request()->routeIs('ventas.*')">
                         Ventas
                     </x-nav-link>
+                    <x-nav-link
+                        :href="route('ordenes.index')"
+                        :active="request()->routeIs('ordenes.*')"
+                    >
+
+                        Órdenes
+
+                    </x-nav-link>
                     @role('admin')
 
                     <x-nav-link :href="route('reportes.index')" :active="request()->routeIs('reportes.*')">

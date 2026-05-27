@@ -10,6 +10,7 @@ use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\OrdenController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,6 +40,16 @@ Route::middleware('auth')->group(function () {
     ->name('ventas.show');
     Route::get('ventas/{venta}/pdf', [VentaController::class, 'pdf'])
         ->name('ventas.pdf');
+
+    Route::get(
+        '/ordenes',
+        [OrdenController::class, 'index']
+    )->name('ordenes.index');
+
+    Route::get(
+        '/ordenes/{id}',
+        [OrdenController::class, 'show']
+    )->name('ordenes.show');
 
     Route::middleware(['role:admin'])->group(function () {
 

@@ -2,211 +2,239 @@
 
     <div class="p-6">
 
-        <h1 class="text-3xl font-bold mb-6">
+        <!-- TITULO -->
 
-            Dashboard ShopSound
+        <div class="mb-10">
 
-        </h1>
+            <h1 class="text-4xl font-black">
+
+                Dashboard ShopSound
+
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+
+                Panel administrativo general
+
+            </p>
+
+        </div>
 
         <!-- CARDS -->
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6 mb-10">
 
-            <div class="bg-white shadow rounded p-6">
+            <!-- PRODUCTOS -->
 
-                <h2 class="text-gray-500 text-sm">
+            <div class="bg-white shadow rounded-2xl p-6">
+
+                <p class="text-gray-500 mb-2">
+
                     Productos
-                </h2>
 
-                <p class="text-3xl font-bold mt-2">
+                </p>
+
+                <h2 class="text-4xl font-black">
+
                     {{ $totalProductos }}
-                </p>
+
+                </h2>
 
             </div>
 
-            <div class="bg-white shadow rounded p-6">
+            <!-- CATEGORIAS -->
 
-                <h2 class="text-gray-500 text-sm">
-                    Clientes
-                </h2>
+            <div class="bg-white shadow rounded-2xl p-6">
 
-                <p class="text-3xl font-bold mt-2">
-                    {{ $totalClientes }}
+                <p class="text-gray-500 mb-2">
+
+                    Categorías
+
                 </p>
+
+                <h2 class="text-4xl font-black">
+
+                    {{ $totalCategorias }}
+
+                </h2>
 
             </div>
 
-            <div class="bg-white shadow rounded p-6">
+            <!-- VENTAS FISICAS -->
 
-                <h2 class="text-gray-500 text-sm">
-                    Ventas
-                </h2>
+            <div class="bg-white shadow rounded-2xl p-6">
 
-                <p class="text-3xl font-bold mt-2">
-                    {{ $totalVentas }}
+                <p class="text-gray-500 mb-2">
+
+                    Ventas Tienda
+
                 </p>
+
+                <h2 class="text-4xl font-black text-blue-600">
+
+                    ${{ number_format($ventasFisicas, 2) }}
+
+                </h2>
 
             </div>
 
-            <div class="bg-white shadow rounded p-6">
+            <!-- VENTAS WEB -->
 
-                <h2 class="text-gray-500 text-sm">
-                    Ingresos
+            <div class="bg-white shadow rounded-2xl p-6">
+
+                <p class="text-gray-500 mb-2">
+
+                    Órdenes Web
+
+                </p>
+
+                <h2 class="text-4xl font-black text-purple-600">
+
+                    ${{ number_format($ventasWeb, 2) }}
+
                 </h2>
 
-                <p class="text-3xl font-bold mt-2">
-                    ${{ number_format($ingresos, 2) }}
+            </div>
+
+            <!-- TOTAL -->
+
+            <div class="bg-white shadow rounded-2xl p-6">
+
+                <p class="text-gray-500 mb-2">
+
+                    Ingresos Totales
+
                 </p>
+
+                <h2 class="text-4xl font-black text-green-600">
+
+                    ${{ number_format($ingresosTotales, 2) }}
+
+                </h2>
 
             </div>
 
         </div>
 
-        <!-- PRODUCTOS BAJO STOCK -->
+        <!-- TABLAS -->
 
-        <div class="bg-white shadow rounded p-6 mb-8">
+        <div class="grid lg:grid-cols-2 gap-8">
 
-            <h2 class="text-2xl font-bold mb-4">
+            <!-- VENTAS -->
 
-                Productos con Bajo Stock
+            <div class="bg-white shadow rounded-2xl p-6">
 
-            </h2>
+                <h2 class="text-2xl font-bold mb-6">
 
-            <table class="min-w-full">
+                    Ventas Recientes
 
-                <thead class="bg-gray-100">
+                </h2>
 
-                    <tr>
-
-                        <th class="px-4 py-2 text-left">
-                            Producto
-                        </th>
-
-                        <th class="px-4 py-2 text-left">
-                            Stock
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    @forelse($productosBajos as $producto)
-
-                        <tr class="border-t">
-
-                            <td class="px-4 py-2">
-
-                                {{ $producto->nombre }}
-
-                            </td>
-
-                            <td class="px-4 py-2 text-red-600 font-bold">
-
-                                {{ $producto->stock }}
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-
-                            <td colspan="2"
-                                class="text-center py-4 text-gray-500">
-
-                                No hay productos bajos de stock
-
-                            </td>
-
-                        </tr>
-
-                    @endforelse
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <!-- VENTAS RECIENTES -->
-
-        <div class="bg-white shadow rounded p-6">
-
-            <h2 class="text-2xl font-bold mb-4">
-
-                Ventas Recientes
-
-            </h2>
-
-            <table class="min-w-full">
-
-                <thead class="bg-gray-100">
-
-                    <tr>
-
-                        <th class="px-4 py-2 text-left">
-                            Folio
-                        </th>
-
-                        <th class="px-4 py-2 text-left">
-                            Cliente
-                        </th>
-
-                        <th class="px-4 py-2 text-left">
-                            Total
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
+                <div class="space-y-4">
 
                     @forelse($ventasRecientes as $venta)
 
-                        <tr class="border-t">
+                        <div class="border rounded-xl p-4">
 
-                            <td class="px-4 py-2">
+                            <div class="flex justify-between">
 
-                                #{{ $venta->id }}
+                                <div>
 
-                            </td>
+                                    <p class="font-bold">
 
-                            <td class="px-4 py-2">
+                                        Venta #{{ $venta->id }}
 
-                                {{ $venta->cliente->nombre }}
+                                    </p>
 
-                            </td>
+                                    <p class="text-gray-500 text-sm">
 
-                            <td class="px-4 py-2">
+                                        {{ $venta->created_at->format('d/m/Y H:i') }}
 
-                                ${{ number_format($venta->total, 2) }}
+                                    </p>
 
-                            </td>
+                                </div>
 
-                        </tr>
+                                <div class="text-green-600 font-black">
+
+                                    ${{ $venta->total }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
                     @empty
 
-                        <tr>
+                        <p class="text-gray-500">
 
-                            <td colspan="3"
-                                class="text-center py-4 text-gray-500">
+                            Sin ventas registradas
 
-                                No hay ventas registradas
-
-                            </td>
-
-                        </tr>
+                        </p>
 
                     @endforelse
 
-                </tbody>
+                </div>
 
-            </table>
+            </div>
+
+            <!-- ORDENES -->
+
+            <div class="bg-white shadow rounded-2xl p-6">
+
+                <h2 class="text-2xl font-bold mb-6">
+
+                    Órdenes Web Recientes
+
+                </h2>
+
+                <div class="space-y-4">
+
+                    @forelse($ordenesRecientes as $orden)
+
+                        <div class="border rounded-xl p-4">
+
+                            <div class="flex justify-between">
+
+                                <div>
+
+                                    <p class="font-bold">
+
+                                        Orden #{{ $orden->id }}
+
+                                    </p>
+
+                                    <p class="text-gray-500 text-sm">
+
+                                        {{ $orden->cliente }}
+
+                                    </p>
+
+                                </div>
+
+                                <div class="text-purple-600 font-black">
+
+                                    ${{ $orden->total }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    @empty
+
+                        <p class="text-gray-500">
+
+                            Sin órdenes registradas
+
+                        </p>
+
+                    @endforelse
+
+                </div>
+
+            </div>
 
         </div>
 
