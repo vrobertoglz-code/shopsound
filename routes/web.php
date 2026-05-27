@@ -39,11 +39,18 @@ Route::middleware('auth')->group(function () {
     ->name('ventas.show');
     Route::get('ventas/{venta}/pdf', [VentaController::class, 'pdf'])
         ->name('ventas.pdf');
-    Route::get('reportes', [ReporteController::class, 'index'])
-        ->name('reportes.index');
 
-    Route::post('reportes/ventas', [ReporteController::class, 'ventasPorFecha'])
-        ->name('reportes.ventas');
+    Route::middleware(['role:admin'])->group(function () {
+
+        Route::get('reportes',
+            [ReporteController::class, 'index'])
+            ->name('reportes.index');
+
+        Route::post('reportes/ventas',
+            [ReporteController::class, 'ventasPorFecha'])
+            ->name('reportes.ventas');
+
+    });
 });
 
 require __DIR__.'/auth.php';

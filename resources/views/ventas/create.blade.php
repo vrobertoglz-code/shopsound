@@ -1,9 +1,11 @@
 <x-app-layout>
 
-    <div class="p-6 max-w-5xl mx-auto">
+    <div class="p-6 max-w-7xl mx-auto">
 
-        <h1 class="text-2xl font-bold mb-6">
-            Nueva Venta
+        <h1 class="text-3xl font-bold mb-6">
+
+            Punto de Venta
+
         </h1>
 
         @if ($errors->any())
@@ -25,16 +27,18 @@
         @endif
 
         <form action="{{ route('ventas.store') }}"
-              method="POST"
-              class="bg-white p-6 rounded shadow">
+              method="POST">
 
             @csrf
 
             <!-- CLIENTE -->
-            <div class="mb-6">
+
+            <div class="bg-white shadow rounded p-6 mb-6">
 
                 <label class="block mb-2 font-bold">
+
                     Cliente
+
                 </label>
 
                 <select name="cliente_id"
@@ -42,7 +46,7 @@
                         required>
 
                     <option value="">
-                        Seleccione un cliente
+                        Seleccione cliente
                     </option>
 
                     @foreach($clientes as $cliente)
@@ -59,80 +63,85 @@
 
             </div>
 
-            <!-- PRODUCTOS -->
-            <h2 class="text-xl font-bold mb-4">
-                Productos
-            </h2>
+            <!-- TABLA PRODUCTOS -->
 
-            <div id="productos-container">
+            <div class="bg-white shadow rounded overflow-hidden">
 
-                <div class="grid grid-cols-2 gap-4 mb-4 producto-item">
+                <table class="min-w-full" id="tabla-productos">
 
-                    <div>
+                    <thead class="bg-gray-100">
 
-                        <label class="block mb-2">
-                            Producto
-                        </label>
+                        <tr>
 
-                        <select name="productos[0][producto_id]"
-                                class="w-full border rounded px-4 py-2"
-                                required>
+                            <th class="px-4 py-3 text-left">
+                                Producto
+                            </th>
 
-                            <option value="">
-                                Seleccione producto
-                            </option>
+                            <th class="px-4 py-3 text-left">
+                                Precio
+                            </th>
 
-                            @foreach($productos as $producto)
+                            <th class="px-4 py-3 text-left">
+                                Stock
+                            </th>
 
-                                <option value="{{ $producto->id }}"
-                                        data-stock="{{ $producto->stock }}">
+                            <th class="px-4 py-3 text-left">
+                                Cantidad
+                            </th>
 
-                                    {{ $producto->nombre }}
-                                    | Stock: {{ $producto->stock }}
-                                    | ${{ $producto->precio }}
+                            <th class="px-4 py-3 text-left">
+                                Subtotal
+                            </th>
 
-                                </option>
+                            <th class="px-4 py-3 text-left">
+                                Acción
+                            </th>
 
-                            @endforeach
+                        </tr>
 
-                        </select>
+                    </thead>
 
-                    </div>
+                    <tbody id="productos-container">
 
-                    <div>
+                    </tbody>
 
-                        <label class="block mb-2">
-                            Cantidad
-                        </label>
+                </table>
 
-                           <input type="number"
-                               name="productos[0][cantidad]"
-                               min="1"
-                               class="w-full border rounded px-4 py-2 cantidad-input"
-                               required>
+            </div>
 
-                    </div>
+            <!-- BOTONES -->
+
+            <div class="flex justify-between items-center mt-6">
+
+                <button type="button"
+                        id="agregar-producto"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+
+                    Agregar Producto
+
+                </button>
+
+                <div class="text-right">
+
+                    <h2 class="text-3xl font-bold">
+
+                        Total:
+                        $<span id="total-general">0.00</span>
+
+                    </h2>
 
                 </div>
 
             </div>
 
-            <!-- BOTON AGREGAR -->
-            <button type="button"
-                    id="agregar-producto"
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mb-6">
+            <!-- GUARDAR -->
 
-                Agregar Otro Producto
-
-            </button>
-
-            <!-- BOTON GUARDAR -->
-            <div>
+            <div class="mt-6">
 
                 <button type="submit"
-                        class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">
+                        class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded text-lg">
 
-                    Guardar Venta
+                    Finalizar Venta
 
                 </button>
 
@@ -142,75 +151,173 @@
 
     </div>
 
-    <!-- SCRIPT -->
     <script>
 
-        let index = 1;
+        let index = 0;
 
-        document.getElementById('agregar-producto')
-            .addEventListener('click', function () {
+        const productos = @json($productos);
 
-                const container = document.getElementById('productos-container');
+        function actualizarTotal() {
 
-                const nuevo = document.querySelector('.producto-item')
-                    .cloneNode(true);
+            let total = 0;
 
-                nuevo.querySelectorAll('select, input').forEach(element => {
+            document.querySelectorAll('.subtotal')
+                .forEach(subtotal => {
 
-                    if (element.name.includes('producto_id')) {
-
-                        element.name = `productos[${index}][producto_id]`;
-
-                        element.value = '';
-
-                    }
-
-                    if (element.name.includes('cantidad')) {
-
-                        element.name = `productos[${index}][cantidad]`;
-
-                        element.value = '';
-
-                    }
+                    total += parseFloat(subtotal.innerText) || 0;
 
                 });
 
-                container.appendChild(nuevo);
+            document.getElementById('total-general')
+                .innerText = total.toFixed(2);
+        }
 
-                index++;
-            });
+        function agregarFila() {
 
-    </script>
+            let fila = document.createElement('tr');
 
-    <script>
+            fila.classList.add('border-t');
 
-        function configurarStock() {
+            fila.innerHTML = `
 
-            document.querySelectorAll('.producto-item')
-                .forEach(item => {
+                <td class="px-4 py-4">
 
-                    const select = item.querySelector('select');
+                    <select name="productos[${index}][producto_id]"
+                            class="producto-select w-full border rounded px-2 py-2"
+                            required>
 
-                    const cantidadInput = item.querySelector('.cantidad-input');
+                        <option value="">
+                            Seleccione
+                        </option>
 
-                    select.addEventListener('change', function () {
+                        ${productos.map(producto => `
+                            <option
+                                value="${producto.id}"
+                                data-precio="${producto.precio}"
+                                data-stock="${producto.stock}">
 
-                        const option =
-                            select.options[select.selectedIndex];
+                                ${producto.nombre}
 
-                        const stock =
-                            option.getAttribute('data-stock');
+                            </option>
+                        `).join('')}
 
-                        cantidadInput.max = stock;
+                    </select>
 
-                        cantidadInput.placeholder =
-                            'Máximo disponible: ' + stock;
-                    });
+                </td>
 
+                <td class="px-4 py-4 precio">
+
+                    $0.00
+
+                </td>
+
+                <td class="px-4 py-4 stock">
+
+                    0
+
+                </td>
+
+                <td class="px-4 py-4">
+
+                    <input type="number"
+                           name="productos[${index}][cantidad]"
+                           min="1"
+                           value="1"
+                           class="cantidad w-24 border rounded px-2 py-2"
+                           required>
+
+                </td>
+
+                <td class="px-4 py-4">
+
+                    $<span class="subtotal">0.00</span>
+
+                </td>
+
+                <td class="px-4 py-4">
+
+                    <button type="button"
+                            class="eliminar bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+
+                        Eliminar
+
+                    </button>
+
+                </td>
+
+            `;
+
+            document.getElementById('productos-container')
+                .appendChild(fila);
+
+            configurarEventos(fila);
+
+            index++;
+        }
+
+        function configurarEventos(fila) {
+
+            const select = fila.querySelector('.producto-select');
+
+            const cantidad = fila.querySelector('.cantidad');
+
+            const precioTd = fila.querySelector('.precio');
+
+            const stockTd = fila.querySelector('.stock');
+
+            const subtotalSpan = fila.querySelector('.subtotal');
+
+            function recalcular() {
+
+                const option =
+                    select.options[select.selectedIndex];
+
+                const precio =
+                    parseFloat(option.dataset.precio || 0);
+
+                const stock =
+                    parseInt(option.dataset.stock || 0);
+
+                let cantidadValor =
+                    parseInt(cantidad.value || 0);
+
+                if (cantidadValor > stock) {
+
+                    alert('Stock insuficiente');
+
+                    cantidad.value = stock;
+
+                    cantidadValor = stock;
+                }
+
+                precioTd.innerText =
+                    '$' + precio.toFixed(2);
+
+                stockTd.innerText = stock;
+
+                subtotalSpan.innerText =
+                    (precio * cantidadValor).toFixed(2);
+
+                actualizarTotal();
+            }
+
+            select.addEventListener('change', recalcular);
+
+            cantidad.addEventListener('input', recalcular);
+
+            fila.querySelector('.eliminar')
+                .addEventListener('click', () => {
+
+                    fila.remove();
+
+                    actualizarTotal();
                 });
         }
 
-        configurarStock();
+        document.getElementById('agregar-producto')
+            .addEventListener('click', agregarFila);
+
+        agregarFila();
 
     </script>
 
