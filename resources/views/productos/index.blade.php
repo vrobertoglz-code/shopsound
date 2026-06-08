@@ -8,11 +8,11 @@
                 Productos
             </h1>
 
-            <a href="{{ route('productos.create') }}"
-               class="bg-green-500 text-white px-4 py-2 rounded">
-
-                Nuevo Producto
-
+            <a
+                href="{{ route('productos.create') }}"
+                class="inline-flex items-center px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow transition"
+            >
+                + Nuevo producto
             </a>
 
         </div>
@@ -130,31 +130,33 @@
 
                             </td>
 
-                            <td class="px-6 py-4 flex gap-2">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
 
-                                <a href="{{ route('productos.edit', $producto->id) }}"
-                                   class="bg-blue-500 text-white px-3 py-1 rounded">
+                                    <a
+                                        href="{{ route('productos.edit', $producto->id) }}"
+                                        class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg shadow transition"
+                                    >
+                                        Editar
+                                    </a>
 
-                                    Editar
+                                    <form
+                                        action="{{ route('productos.destroy', $producto->id) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('¿Seguro que deseas eliminar este producto?')"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
 
-                                </a>
+                                        <button
+                                            type="submit"
+                                            class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-lg shadow transition"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </form>
 
-                                <form action="{{ route('productos.destroy', $producto->id) }}"
-                                      method="POST">
-
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit"
-                                            onclick="return confirm('¿Eliminar producto?')"
-                                            class="bg-red-500 text-white px-3 py-1 rounded">
-
-                                        Eliminar
-
-                                    </button>
-
-                                </form>
-
+                                </div>
                             </td>
 
                         </tr>
